@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Form from './components/Form';
 
 const App = () => {
+
+  const [ search, setSearch ] = useState({
+    city: '',
+    country: '',
+  });
 
   const hideKeyboard = () => {
     Keyboard.dismiss();
@@ -15,7 +20,12 @@ const App = () => {
       >
         <View style={styles.app}>
           <View style={styles.container}>
-            <Form />
+
+            <Form
+              search={search}
+              setSearch={setSearch}
+            />
+
           </View>
         </View>
       </TouchableWithoutFeedback>

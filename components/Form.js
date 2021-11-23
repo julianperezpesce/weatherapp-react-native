@@ -1,9 +1,11 @@
-<script src="http://localhost:8097"></script>
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 
-const Form = () => {
+const Form = ({ search, setSearch }) => {
+
+  const { city, country } = search;
 
   const [ animatedBtn ] = useState(new Animated.Value(1));
 
@@ -17,11 +19,12 @@ const Form = () => {
     Animated.spring(animatedBtn, {
       toValue: 1,
       friction: 1,
+      tension: 30,
     }).start();
   };
 
   const animatedStyle = {
-    transform: [{ 
+    transform: [{
       scale: animatedBtn,
     }],
   };
@@ -31,20 +34,24 @@ const Form = () => {
       <View /*style={styles.form}*/>
         <View>
           <TextInput
-          style={styles.input}
+            value={city}
+            style={styles.input}
+            onChangeText={writedCity => setSearch({ ...search, city: writedCity })}
             placeholder="Ciudad"
             placeholderTextColor="#666"
           />
         </View>
         <View>
           <Picker
+            selectedValue={country}
+            onValueChange={(choosedCountry) => setSearch({ ...search, country: choosedCountry })}
             itemStyle={ {
               height: 120,
               backgroundColor: '#fff',
             }}
           >
-            <Picker.Item label="Elige una opción" value="" />
-            <Picker.Item label="Argentina" value="us" />
+            <Picker.Item label="Elige tu país" value="" />
+            <Picker.Item label="Argentina" value="ar" />
             <Picker.Item label="Estados Unidos" value="us" />
             <Picker.Item label="Colombia" value="co" />
             <Picker.Item label="España" value="es" />
@@ -55,7 +62,7 @@ const Form = () => {
           onPressIn={() => animateIn() }
           onPressOut={() => animateOut() }
         >
-          <Animated.View 
+          <Animated.View
             style={[ styles.btnSearch, animatedStyle ]}
           >
             <Text style={ styles.textBtnSearch }>Buscar Clima</Text>
