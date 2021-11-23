@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, Animated, Alert } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 
 const Form = ({ search, setSearch }) => {
@@ -21,6 +21,29 @@ const Form = ({ search, setSearch }) => {
       friction: 1,
       tension: 30,
     }).start();
+  };
+
+  const getWeather = () => {
+    if (city.trim() && country.trim()) {
+      setSearch({
+        city: '',
+        country: '',
+      });
+      animateOut();
+    }
+    alertMsg();
+    return;
+  };
+
+  const alertMsg = () => {
+    Alert.alert(
+      'Error',
+      'Please enter a city and country',
+      [
+        { text: 'OK' },
+      ],
+      { cancelable: false },
+    );
   };
 
   const animatedStyle = {
@@ -61,6 +84,7 @@ const Form = ({ search, setSearch }) => {
         <TouchableWithoutFeedback
           onPressIn={() => animateIn() }
           onPressOut={() => animateOut() }
+          onPress={() => getWeather() }
         >
           <Animated.View
             style={[ styles.btnSearch, animatedStyle ]}
