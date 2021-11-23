@@ -1,9 +1,31 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+<script src="http://localhost:8097"></script>
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 
 const Form = () => {
+
+  const [ animatedBtn ] = useState(new Animated.Value(1));
+
+  const animateIn = () => {
+    Animated.spring(animatedBtn, {
+      toValue: 0.9,
+    }).start();
+  };
+
+  const animateOut = () => {
+    Animated.spring(animatedBtn, {
+      toValue: 1,
+      friction: 1,
+    }).start();
+  };
+
+  const animatedStyle = {
+    transform: [{ 
+      scale: animatedBtn,
+    }],
+  };
+
   return (
     <>
       <View /*style={styles.form}*/>
@@ -29,10 +51,15 @@ const Form = () => {
             <Picker.Item label="México" value="mx" />
           </Picker>
         </View>
-        <TouchableWithoutFeedback>
-          <View style={ styles.btnSearch }>
+        <TouchableWithoutFeedback
+          onPressIn={() => animateIn() }
+          onPressOut={() => animateOut() }
+        >
+          <Animated.View 
+            style={[ styles.btnSearch, animatedStyle ]}
+          >
             <Text style={ styles.textBtnSearch }>Buscar Clima</Text>
-          </View>
+          </Animated.View>
         </TouchableWithoutFeedback>
       </View>
     </>
