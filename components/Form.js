@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, Animated, Alert } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 
-const Form = ({ search, setSearch }) => {
+const Form = ({ search, setSearch, setConsult }) => {
 
   const { city, country } = search;
 
@@ -12,6 +12,7 @@ const Form = ({ search, setSearch }) => {
   const animateIn = () => {
     Animated.spring(animatedBtn, {
       toValue: 0.9,
+      useNativeDriver: true,
     }).start();
   };
 
@@ -20,19 +21,21 @@ const Form = ({ search, setSearch }) => {
       toValue: 1,
       friction: 1,
       tension: 30,
+      useNativeDriver: true,
     }).start();
   };
 
   const getWeather = () => {
-    if (city.trim() && country.trim()) {
-      setSearch({
-        city: '',
-        country: '',
-      });
-      animateOut();
+    if (city.trim() === '' || country.trim() === '') {
+      alertMsg();
+      return;
     }
-    alertMsg();
-    return;
+      // setSearch({
+      //   city: '',
+      //   country: '',
+      // });
+      animateOut();
+      setConsult(true);
   };
 
   const alertMsg = () => {
@@ -54,7 +57,7 @@ const Form = ({ search, setSearch }) => {
 
   return (
     <>
-      <View /*style={styles.form}*/>
+      <View >
         <View>
           <TextInput
             value={city}
